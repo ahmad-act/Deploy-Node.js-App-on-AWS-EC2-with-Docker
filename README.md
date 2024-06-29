@@ -78,29 +78,43 @@ docker --version
 
 
  ```
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+# Stage 1: Build Stage
+FROM ubuntu:20.04 AS builder
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
-COPY ["BookReservationService/BookReservationService.csproj", "BookReservationService/"]
-COPY ["BookReservationBL/BookReservationBL.csproj", "BookReservationBL/"]
-COPY ["BookReservationDL/BookReservationDL.csproj", "BookReservationDL/"]
-COPY ["BookReservationModel/BookReservationModel.csproj", "BookReservationModel/"]
-RUN dotnet restore "BookReservationService/BookReservationService.csproj"
+# Install Node.js and npm
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install the dependencies
+RUN npm install
+
+# Copy the rest of the application code to the working directory
 COPY . .
-WORKDIR "/src/BookReservationService"
-RUN dotnet build "BookReservationService.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "BookReservationService.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# Stage 2: Production Stage
+FROM gcr.io/distroless/nodejs:14
 
-FROM base AS final
+# Set the working directory inside the container
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BookReservationService.dll"]
+
+# Copy only the necessary files from the builder stage
+COPY --from=builder /app .
+
+# Expose the port the app runs on
+EXPOSE 3001
+
+# Set the command to run the application
+ENTRYPOINT ["/nodejs/bin/node", "index.js"]
 ```
 
 

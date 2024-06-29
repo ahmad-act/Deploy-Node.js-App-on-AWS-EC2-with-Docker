@@ -24,7 +24,7 @@
 
 1. **Open Terminal/Command Prompt:**
 
-Navigate to the directory where your .pem file is located.
+	- Navigate to the directory where your .pem file is located.
 
 2. **Change Permissions of the Key Pair File:**
 ```bash
@@ -129,7 +129,7 @@ docker build -t your-node-app .
 	- docker tag your-node-app your-dockerhub-username/your-node-app
 	- docker push your-dockerhub-username/your-node-app
 
-  ## Run the Docker Container on EC2
+## Run the Docker Container on EC2
   
 1. Pull the Docker Image on EC2 (if pushed to Docker Hub):
 ```bash
@@ -142,7 +142,7 @@ docker run -d -p 3001:3001 your-node-app
 ```
 
 3. Verify the Application is Running:
-	- Open your browser and navigate to http://your-ec2-instance-public-dns:3000.
+	- Open your browser and navigate to http://your-ec2-instance-public-dns:3001.
 
 ## Configure Security Group for Port 3001
 
@@ -151,9 +151,9 @@ docker run -d -p 3001:3001 your-node-app
 	- Select your instance.
 	- In the Description tab, click on the security group.
 	- Click on "Edit inbound rules".
-	- Add a rule to allow traffic on port 3000:
+	- Add a rule to allow traffic on port 3001:
 	- Type: Custom TCP
-	- Port Range: 3000
+	- Port Range: 3001
 	- Source: 0.0.0.0/0 (for testing purposes, restrict this in production)
 
 ###### Now your Node.js application should be accessible from the internet.

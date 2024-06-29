@@ -74,7 +74,7 @@ docker --version
 ## Use the Dockerfile for the Node.js Application
  
 1. Location of the Dockerfile:
-<https://github.com/awsaf-utm/Book-Reservation-Services-with-C-Sharp-Web-API-Swagger-and-Docker/blob/main/BookReservationService/Dockerfile>
+<https://github.com/awsaf-utm/Deploy-Node.js-App-on-AWS-EC2-with-Docker/blob/main/Dockerfile>
 
 
  ```

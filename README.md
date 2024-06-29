@@ -60,13 +60,13 @@ sudo usermod -aG docker $USER
 
 5. Logout and Reconnect to the Instance:
 
-6. This step is necessary for the group change to take effect.
+- This step is necessary for the group change to take effect.
 ```bash
 exit
 ssh -i "your-key-pair.pem" ec2-user@your-ec2-instance-public-dns
 ```
 
-7. Verify Docker Installation:
+6. Verify Docker Installation:
 ```bash
 docker --version
  ```
